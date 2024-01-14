@@ -32,6 +32,7 @@ class MainActivity : ComponentActivity() {
         }
         setContent {
             My_NewsApplicationTheme {
+
                 val isSystemInDarkMode = isSystemInDarkTheme()
                 val systemController = rememberSystemUiController()
 
@@ -46,6 +47,8 @@ class MainActivity : ComponentActivity() {
                 Box(modifier = Modifier.background(color = MaterialTheme.colorScheme.background )){
                     val startDestination = viewModel.startDestination
                     NavigationGraph(launchDestination = startDestination )
+
+
 
                 }
             }

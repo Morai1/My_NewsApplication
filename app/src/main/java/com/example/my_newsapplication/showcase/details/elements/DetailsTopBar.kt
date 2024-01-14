@@ -11,6 +11,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
@@ -22,12 +26,14 @@ import com.example.my_newsapplication.ui.theme.My_NewsApplicationTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailsTopBar(
-    onBrowsingClick:() -> Unit,
-    onShareClick:() -> Unit,
-    onBookmarkClick:() -> Unit,
-    onBackClick:() -> Unit
+    onBrowsingClick: () -> Unit,
+    onShareClick: () -> Unit,
+    onBookmarkClick: () -> Unit,
+    onBackClick: () -> Unit
+
 ) {
-    
+    var isBookmarked by remember { mutableStateOf(false) }
+
     TopAppBar(
         title = {},
         modifier = Modifier.fillMaxWidth(),
@@ -57,9 +63,13 @@ fun DetailsTopBar(
                     contentDescription = null
                 )
             }
-            IconButton(onClick = onBookmarkClick) {
+            IconButton(onClick = {
+                isBookmarked = !isBookmarked
+                onBookmarkClick()
+            }) {
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_bookmark_24),
+                    painter = painterResource(id = if(isBookmarked) R.drawable.ic_bookmark_filled_24
+                    else R.drawable.ic_bookmark_24),
                     contentDescription = null
                 )
             }
@@ -67,6 +77,7 @@ fun DetailsTopBar(
 
     )
 }
+
 
 @Preview(showBackground = true)
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
@@ -77,9 +88,9 @@ fun DetailsTopBarPreview() {
             DetailsTopBar(
                 onBrowsingClick = { },
                 onShareClick = { },
-                onBookmarkClick = { }) {
-
-            }
+                onBookmarkClick = { },
+                onBackClick = { },
+            )
+        }
         }
     }
-}

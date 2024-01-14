@@ -7,6 +7,14 @@ import retrofit2.http.Query
 
 interface TheNewsApi {
 
+    /*@GET("/v2/top-headlines")
+    suspend fun getNewsByCategory(
+        @Query("category") category: String,
+        @Query("country") country: String = "us",
+        @Query("apiKey") apiKey: String = API_KEY
+    ): NewsResponse
+     */
+
     @GET("everything")
     suspend fun getNews(
         //Since we are going to use paging 3 library

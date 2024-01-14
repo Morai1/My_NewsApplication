@@ -7,8 +7,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
-import com.example.my_newsapplication.showcase.bookmark.BookmarkScreen
-import com.example.my_newsapplication.showcase.bookmark.BookmarkViewModel
 import com.example.my_newsapplication.showcase.initiation.InitiationScreen
 import com.example.my_newsapplication.showcase.initiation.InitiationViewModel
 import com.example.my_newsapplication.showcase.newsnavigator.NewsNavigator

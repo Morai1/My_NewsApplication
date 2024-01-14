@@ -8,4 +8,5 @@
     <color name="input_background">#fff</color>
     <color name="placeholder">#A0A3BD</color>
     <color name="shimmer">#C3C3C3</color>
+    <color name="primary">#FFBD0101</color>
 </resources>

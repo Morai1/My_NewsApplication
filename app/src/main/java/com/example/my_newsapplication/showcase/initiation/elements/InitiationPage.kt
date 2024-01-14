@@ -23,7 +23,6 @@ import com.example.my_newsapplication.R
 import com.example.my_newsapplication.showcase.Distance.AveragePadding1
 import com.example.my_newsapplication.showcase.Distance.AveragePadding2
 import com.example.my_newsapplication.showcase.initiation.Page
-import com.example.my_newsapplication.showcase.initiation.pages
 import com.example.my_newsapplication.ui.theme.My_NewsApplicationTheme
 
 @Composable

@@ -13,5 +13,6 @@ interface NewsRepository {
     fun selectArticles(): Flow<List<Article>>
     suspend fun selectArticle(url: String): Article?
 
+
 }
 

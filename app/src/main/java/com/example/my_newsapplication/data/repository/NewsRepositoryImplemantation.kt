@@ -10,7 +10,6 @@ import com.example.my_newsapplication.data.remote.TheNewsApi
 import com.example.my_newsapplication.domain.model.Article
 import com.example.my_newsapplication.domain.repository.NewsRepository
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.onEach
 
 class NewsRepositoryImplemantation(
     private val newsApi: TheNewsApi,

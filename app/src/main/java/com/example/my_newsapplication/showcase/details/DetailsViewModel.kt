@@ -12,9 +12,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class DetailsViewModel @Inject constructor(
+open class DetailsViewModel @Inject constructor(
     private val newsUseCase: NewsUseCase
-
 ): ViewModel() {
 
     var sideEffect by mutableStateOf<String?>(null)
@@ -47,4 +46,5 @@ class DetailsViewModel @Inject constructor(
         newsUseCase.upsertTheArticle(article = article)
         sideEffect = "The article is saved"
     }
+
 }

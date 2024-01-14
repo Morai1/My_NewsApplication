@@ -1,5 +1,6 @@
 package com.example.my_newsapplication.domain.usecases.news
 
+
 data class NewsUseCase(
     val getNews: GetNews,
     val searchArticles: SearchArticles,

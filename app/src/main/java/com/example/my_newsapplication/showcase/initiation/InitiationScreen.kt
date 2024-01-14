@@ -19,7 +19,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import com.example.my_newsapplication.showcase.Distance.AveragePadding2
 import com.example.my_newsapplication.showcase.Distance.PageNavigationWidth
 import com.example.my_newsapplication.showcase.common.TheNewsButton

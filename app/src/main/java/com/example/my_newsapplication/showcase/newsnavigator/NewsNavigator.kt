@@ -40,7 +40,7 @@ fun NewsNavigator() {
         listOf(
             BottomNavigationItem(icon = R.drawable.ic_main_24, text = "Main"),
             BottomNavigationItem(icon = R.drawable.ic_search_24, text = "Search"),
-            BottomNavigationItem(icon = R.drawable.ic_bookmark_24, text = "Bookmark")
+            BottomNavigationItem(icon = R.drawable.ic_bookmark_filled_24, text = "Bookmark")
         )
     }
     val navController = rememberNavController()
@@ -131,9 +131,9 @@ fun NewsNavigator() {
                     event = viewModel::onEvent,
                     navigateToDetails = {
                         navigateToDetails(
-                        navController = navController,
-                        article = it
-                    )
+                            navController = navController,
+                            article = it
+                        )
                     }
                 )
             }
@@ -151,7 +151,7 @@ fun NewsNavigator() {
                             navigateUpward = { navController.navigateUp()}
                         )
                     }
-                }
+            }
             composable(route = Dispatch.BookmarkScreen.dispatch){
                 val viewModel: BookmarkViewModel = hiltViewModel()
                 val state = viewModel.state.value
