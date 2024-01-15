@@ -4,28 +4,47 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.net.Uri
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Divider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.composed
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
@@ -43,19 +62,14 @@ fun DetailsScreen(
     article: Article,
     event: (DetailsEvent) -> Unit,
     navigateUpward: () -> Unit
-
 ) {
-
     val context = LocalContext.current
 
     Column(
         modifier = Modifier
-            .padding(
-                top = AveragePadding1
-            )
+            .padding(top = AveragePadding1)
             .statusBarsPadding()
             .fillMaxSize()
-
     ) {
         Text(
             text = "NEWS",
@@ -74,7 +88,7 @@ fun DetailsScreen(
             onBrowsingClick = {
                 Intent(Intent.ACTION_VIEW).also {
                     it.data = Uri.parse(article.url)
-                    if (it.resolveActivity(context.packageManager) != null){
+                    if (it.resolveActivity(context.packageManager) != null) {
                         context.startActivity(it)
                     }
                 }
@@ -88,55 +102,231 @@ fun DetailsScreen(
                     }
                 }
             },
-            onBookmarkClick = {event(DetailsEvent.UpsetDeleteTheArticle(article)) },
+            onBookmarkClick = { event(DetailsEvent.UpsetDeleteTheArticle(article)) },
             onBackClick = navigateUpward
         )
 
         LazyColumn(
-            modifier = Modifier.fillMaxWidth(),
-            contentPadding = PaddingValues(
-                start = AveragePadding1,
-                end = AveragePadding1,
-                top = AveragePadding1
-            )
-        ){
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+                .padding(horizontal = AveragePadding1)
+        ) {
             item {
-                AsyncImage(
-                    model = ImageRequest.Builder(context = context)
-                        .data(article.urlToImage)
-                        .build(),
-                    contentDescription = null,
+                Box(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(TheArticleImageHeight)
-                        .clip(MaterialTheme.shapes.medium),
-                    contentScale = ContentScale.Crop
-                )
+                        .clip(MaterialTheme.shapes.medium)
+                ) {
+                    AsyncImage(
+                        model = ImageRequest.Builder(context = context)
+                            .data(article.urlToImage)
+                            .build(),
+                        contentDescription = null,
+                        modifier = Modifier.fillMaxSize(),
+                        contentScale = ContentScale.Crop
+                    )
+                }
+            }
 
+            item {
                 Spacer(modifier = Modifier.height(AveragePadding1))
+            }
 
+            item {
                 Text(
                     text = article.title,
                     style = MaterialTheme.typography.titleLarge,
                     color = colorResource(
                         id = R.color.text_title
-                    )
-
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth()
                 )
+            }
 
+            item {
                 Text(
                     text = article.content,
                     style = MaterialTheme.typography.bodyMedium,
                     color = colorResource(
                         id = R.color.body
-                    )
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth()
                 )
             }
 
+            item {
+                Spacer(modifier = Modifier.height(AveragePadding1))
+                Comment()
+            }
+
+            item { Spacer(modifier = Modifier.weight(1f)) }
         }
 
     }
 }
+
+
+
+
+data class CommentInfo(val likes: MutableState<Int>, val dislikes: MutableState<Int>)
+
+@Composable
+fun Comment() {
+    var comment by remember {
+        mutableStateOf("")
+    }
+    var comments by remember {
+        mutableStateOf(mapOf<String, CommentInfo>())
+    }
+
+    OutlinedTextField(
+        value = comment,
+        onValueChange = { text ->
+            comment = text
+        },
+        placeholder = {
+            Text(
+                text = "Comment here",
+                style = MaterialTheme.typography.bodySmall,
+                color = colorResource(id = R.color.placeholder)
+            )
+        },
+        modifier = Modifier
+            .fillMaxWidth()
+            .commentSectionBorder(),
+        textStyle = MaterialTheme.typography.bodySmall.copy(
+            color = if (isSystemInDarkTheme()) Color.White else Color.Black
+        )
+    )
+
+    Spacer(modifier = Modifier.height(15.dp))
+
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.End
+    ) {
+        Button(
+            onClick = {
+                if (comment.isNotBlank()) {
+                    val newCommentInfo = CommentInfo(
+                        likes = mutableStateOf(0),
+                        dislikes = mutableStateOf(0)
+                    )
+                    comments = comments + (comment to newCommentInfo)
+                    comment = ""
+                }
+            },
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = Color.White
+            ),
+            shape = RoundedCornerShape(size = 10.dp),
+            modifier = Modifier
+                .height(30.dp)
+        ) {
+            Text(
+                text = "Add",
+                style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.SemiBold)
+            )
+        }
+    }
+
+    comments.forEach { (currentComment, commentInfo) ->
+        Text(
+            text = currentComment,
+            modifier = Modifier
+                .padding(horizontal = AveragePadding1)
+                .fillMaxWidth()
+        )
+        Spacer(modifier = Modifier.height(5.dp))
+        Divider(
+            color = Color.Red,
+            thickness = 1.dp
+        )
+        LikeButtons(likes = commentInfo.likes, disLikes = commentInfo.dislikes)
+    }
+}
+
+@Composable
+fun LikeButtons(likes: MutableState<Int>, disLikes: MutableState<Int>) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.End
+    ) {
+        // Like button
+        var isLikeButtonClicked by remember { mutableStateOf(false) }
+
+        IconButton(
+            onClick = {
+                if (!isLikeButtonClicked) {
+                    likes.value++
+                    isLikeButtonClicked = true
+                }
+
+
+            },
+            modifier = Modifier
+                .padding(end = 16.dp)
+        ) {
+            Row {
+                Icon(
+                    painter = painterResource(id = R.drawable.baseline_thumb_up_24),
+                    contentDescription = "",
+                    tint = if (isLikeButtonClicked) Color.Red else Color.Unspecified,
+                    modifier = Modifier.size(20.dp)
+                )
+                Text(
+                    text = "${likes.value}",
+                    color = if (isLikeButtonClicked) Color.Red else Color.Black,
+                    modifier = Modifier.size(20.dp)
+                )
+            }
+        }
+
+        // Dislike button
+        var isDislikeButtonClicked by remember { mutableStateOf(false) }
+
+        IconButton(
+            onClick = {
+                if (!isDislikeButtonClicked) {
+                    disLikes.value++
+                    isDislikeButtonClicked = true
+                }
+
+            },
+            modifier = Modifier
+        ) {
+            Row {
+                Icon(
+                    painter = painterResource(id = R.drawable.baseline_thumb_down_24),
+                    contentDescription = "",
+                    tint = if (isDislikeButtonClicked) Color.Red else Color.Unspecified,
+                    modifier = Modifier.size(20.dp)
+                )
+                Text(
+                    text = "${disLikes.value}",
+                    color = if (isDislikeButtonClicked) Color.Red else Color.Black,
+                    modifier = Modifier.size(20.dp)
+                )
+            }
+        }
+    }
+}
+
+
+
+fun Modifier.commentSectionBorder() = composed {
+    border(
+        width = 1.dp,
+        color = Color.Transparent,
+        shape = MaterialTheme.shapes.medium
+    )
+}
+
 
 
 @Preview(showBackground = true)
