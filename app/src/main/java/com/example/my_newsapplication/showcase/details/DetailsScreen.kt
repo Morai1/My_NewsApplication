@@ -265,9 +265,10 @@ fun LikeButtons(likes: MutableState<Int>, disLikes: MutableState<Int>) {
                 if (!isLikeButtonClicked) {
                     likes.value++
                     isLikeButtonClicked = true
+                }else {
+                    likes.value--
+                    isLikeButtonClicked = false
                 }
-
-
             },
             modifier = Modifier
                 .padding(end = 16.dp)
@@ -295,8 +296,10 @@ fun LikeButtons(likes: MutableState<Int>, disLikes: MutableState<Int>) {
                 if (!isDislikeButtonClicked) {
                     disLikes.value++
                     isDislikeButtonClicked = true
+                }else {
+                    disLikes.value--
+                    isDislikeButtonClicked = false
                 }
-
             },
             modifier = Modifier
         ) {
