@@ -277,12 +277,12 @@ fun LikeButtons(likes: MutableState<Int>, disLikes: MutableState<Int>) {
                 Icon(
                     painter = painterResource(id = R.drawable.baseline_thumb_up_24),
                     contentDescription = "",
-                    tint = if (isLikeButtonClicked) Color.Red else Color.Unspecified,
+                    tint = if (isLikeButtonClicked) Color.Red else colorResource(id = R.color.body),
                     modifier = Modifier.size(20.dp)
                 )
                 Text(
                     text = "${likes.value}",
-                    color = if (isLikeButtonClicked) Color.Red else Color.Black,
+                    color = if (isLikeButtonClicked) Color.Red else colorResource(id = R.color.body),
                     modifier = Modifier.size(20.dp)
                 )
             }
@@ -307,12 +307,12 @@ fun LikeButtons(likes: MutableState<Int>, disLikes: MutableState<Int>) {
                 Icon(
                     painter = painterResource(id = R.drawable.baseline_thumb_down_24),
                     contentDescription = "",
-                    tint = if (isDislikeButtonClicked) Color.Red else Color.Unspecified,
+                    tint = if (isDislikeButtonClicked) Color.Red else colorResource(id = R.color.body),
                     modifier = Modifier.size(20.dp)
                 )
                 Text(
                     text = "${disLikes.value}",
-                    color = if (isDislikeButtonClicked) Color.Red else Color.Black,
+                    color = if (isDislikeButtonClicked) Color.Red else colorResource(id = R.color.body),
                     modifier = Modifier.size(20.dp)
                 )
             }
